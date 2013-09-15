@@ -1,3 +1,5 @@
+import json
+
 from google.appengine.ext import ndb
 
 
@@ -22,3 +24,13 @@ class Site(ndb.Model):
         if not self.key:
             return None
         return self.key.id()
+
+    @property
+    def json(self):
+        return json.dumps({
+            'name':     self.name,
+            'url':      self.url,
+            'login':    self.login,
+            'password': self.password,
+            'notes':    self.notes
+            })

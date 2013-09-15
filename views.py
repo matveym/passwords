@@ -17,8 +17,8 @@ def home(request):
 
 
 def add_site(request):
-    site_name = request.POST['site_name']
-    site_url = request.POST.get('site_url')
+    site_name = request.POST['name']
+    site_url = request.POST.get('url')
     login = request.POST['login']
     password = request.POST['password']
     notes = request.POST.get('notes')

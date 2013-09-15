@@ -9,7 +9,7 @@ def init_localstore():
     testbed.init_datastore_v3_stub()
 
 
-class Account(ndb.Model):
+class Site(ndb.Model):
     name = ndb.StringProperty()
     url = ndb.StringProperty()
     login = ndb.StringProperty()

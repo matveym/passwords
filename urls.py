@@ -7,6 +7,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns('',
     url(r'^$', 'views.home'),
+    url(r'^add-site/$', 'views.add_site'),
     # url(r'^passwords/', include('passwords.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

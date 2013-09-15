@@ -1,0 +1,18 @@
+    {% if sites %}
+    <table class="table" style="margin-top: 1em; width: 70em; font-size: 100%;">
+        <tr style="background-color: #FFB2CC;">
+            <th>Name of service</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th></th>
+        </tr>
+    {% for site in sites %}
+        <tr>
+          <td><a href="#">{{ site.name }}</a></td>
+            <td>{{ site.login }}</td>
+            <td>{{ site.password }}</td>
+            <td><a class="glyphicon glyphicon-edit" data-toggle="modal" href="#editDialog"></a></td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% endif %}

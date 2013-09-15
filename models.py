@@ -16,3 +16,9 @@ class Site(ndb.Model):
     # TODO Make BlobProperty, encrypt
     password = ndb.StringProperty()
     notes = ndb.StringProperty()
+
+    @property
+    def id(self):
+        if not self.key:
+            return None
+        return self.key.id()

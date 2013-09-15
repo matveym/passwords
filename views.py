@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from google.appengine.ext import ndb
 
 from models import Site, init_localstore
 import settings
@@ -24,6 +25,14 @@ def add_site(request):
     notes = request.POST.get('notes')
 
     Site(name=site_name, url=site_url, login=login, password=password, notes=notes).put()
+    return render(request, '_sites.html', {
+        'sites': _all_sites()
+        })
+
+
+def remove_site(request):
+    site_id = request.POST['id']
+    ndb.Key('Site', int(site_id)).delete()
     return render(request, '_sites.html', {
         'sites': _all_sites()
         })

@@ -28,6 +28,7 @@ class Site(ndb.Model):
     @property
     def json(self):
         return json.dumps({
+            'id':       self.id,
             'name':     self.name,
             'url':      self.url,
             'login':    self.login,

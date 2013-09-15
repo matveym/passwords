@@ -19,7 +19,10 @@
           <td class="login">{{ site.login }}</td>
           <td class="password">{{ site.password }}</td>
           <td class="notes">{{ site.notes }}</td>
-          <td><a class="glyphicon glyphicon-edit editLink" data-site-id="{{ site.id }}"></a></td>
+          <td style="width: 4em;">
+            <a class="glyphicon glyphicon-edit editLink" data-site-id="{{ site.id }}"></a>
+            <a class="glyphicon glyphicon-remove removeLink" style="margin-left: 0.5em;" data-site-id="{{ site.id }}"></a>
+          </td>
         </tr>
     {% endfor %}
     </table>

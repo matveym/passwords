@@ -25,13 +25,16 @@ class Site(ndb.Model):
             return None
         return self.key.id()
 
+    def to_dict(self):
+        return {
+        'id':       self.id,
+        'name':     self.name,
+        'url':      self.url,
+        'login':    self.login,
+        'password': self.password,
+        'notes':    self.notes
+        }
+
     @property
     def json(self):
-        return json.dumps({
-            'id':       self.id,
-            'name':     self.name,
-            'url':      self.url,
-            'login':    self.login,
-            'password': self.password,
-            'notes':    self.notes
-            })
+        return json.dumps(self.to_dict())

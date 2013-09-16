@@ -14,8 +14,10 @@ if settings.DEBUG:
 
 
 def home(request):
+    sites = _all_sites()
     return render(request, 'passwords.html', {
-        'sites': _all_sites()
+        'sites': sites,
+        'sites_json': json.dumps(_sites_dict(sites))
         })
 
 
@@ -36,18 +38,22 @@ def remove_site(request):
     return HttpResponse(_refresh_sites(request))
 
 
+def _sites_dict(sites):
+    sites_dict = {}
+    for site in sites:
+        sites_dict[site.id] = site.to_dict()
+    return sites_dict
+
+
 def _refresh_sites(request):
     sites = _all_sites()
     sites_html = render(request, '_sites.html', {
         'sites': sites
         }).content
 
-    sites_dict = {}
-    for site in sites:
-        sites_dict[site.id] = site.to_dict()
     return json.dumps({
             'sites_html': sites_html,
-            'sites': sites_dict
+            'sites': _sites_dict(sites)
             })
 
 def _all_sites():

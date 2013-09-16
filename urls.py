@@ -7,7 +7,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = patterns('',
     url(r'^$', 'views.home'),
-    url(r'^add-site/$', 'views.add_site'),
+    url(r'^save-site/$', 'views.save_site'),
     url(r'^remove-site/$', 'views.remove_site'),
     # url(r'^passwords/', include('passwords.foo.urls')),
 

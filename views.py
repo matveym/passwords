@@ -21,14 +21,23 @@ def home(request):
         })
 
 
-def add_site(request):
-    site_name = request.POST['name']
-    site_url = request.POST.get('url')
-    login = request.POST['login']
-    password = request.POST['password']
-    notes = request.POST.get('notes')
-
-    Site(name=site_name, url=site_url, login=login, password=password, notes=notes).put()
+def save_site(request):
+    site_name =     request.POST.get('name')
+    site_url =      request.POST.get('url')
+    login =         request.POST.get('login')
+    password =      request.POST.get('password')
+    notes =         request.POST.get('notes')
+    site_id =       request.POST.get('id')
+    if site_id:
+        site = ndb.Key('Site', int(site_id)).get()
+        site.name = site_name
+        site.url = site_url
+        site.login = login
+        site.password = password
+        site.notes = notes
+        site.put()
+    else:
+        Site(name=site_name, url=site_url, login=login, password=password, notes=notes).put()
     return HttpResponse(_refresh_sites(request))
 
 

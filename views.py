@@ -7,6 +7,7 @@ from google.appengine.ext import ndb
 
 from models import Site, init_localstore
 import settings
+from utils import uniq
 
 
 if settings.DEBUG:
@@ -15,9 +16,13 @@ if settings.DEBUG:
 
 def home(request):
     sites = _all_sites()
+    logins = uniq([site.login for site in sites])
+    passwords = uniq([site.password for site in sites])
     return render(request, 'passwords.html', {
         'sites': sites,
-        'sites_json': json.dumps(_sites_dict(sites))
+        'sites_json': json.dumps(_sites_dict(sites)),
+        'logins': logins,
+        'passwords': passwords
         })
 
 

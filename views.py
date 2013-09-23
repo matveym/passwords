@@ -16,13 +16,13 @@ if settings.DEBUG:
 
 def home(request):
     sites = _all_sites()
-    logins = uniq([site.login for site in sites])
-    passwords = uniq([site.password for site in sites])
+    logins = sorted(uniq([site.login for site in sites if site.login]))
+    passwords = sorted(uniq([site.password for site in sites if site.password]))
     return render(request, 'passwords.html', {
         'sites': sites,
         'sites_json': json.dumps(_sites_dict(sites)),
-        'logins': logins,
-        'passwords': passwords
+        'logins_json': json.dumps(logins),
+        'passwords_json': json.dumps(passwords)
         })
 
 

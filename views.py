@@ -6,13 +6,9 @@ from django.shortcuts import render, redirect
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-from models import Site, init_localstore, root_key, site_key, all_sites
+from models import Site, root_key, site_key, all_sites
 import settings
 from utils import uniq
-
-
-# if settings.DEBUG:
-#     init_localstore()
 
 
 def home(request):

@@ -12,8 +12,7 @@ from utils import uniq
 
 
 def home(request):
-    current_user = users.get_current_user()
-    if not current_user or not current_user.email() == 'slonenka@gmail.com':
+    if not _is_logged_in(request):
         return redirect(users.create_login_url('/'))
 
     sites = all_sites()
@@ -29,6 +28,7 @@ def home(request):
 
 
 def save_site(request):
+    assert _is_logged_in(request)
     site_name =     request.POST.get('name')
     site_url =      request.POST.get('url')
     login =         request.POST.get('login')
@@ -50,18 +50,27 @@ def save_site(request):
 
 
 def remove_site(request):
+    assert _is_logged_in(request)
     site_id = request.POST['id']
     site_key(site_id).delete()
     return HttpResponse(_refresh_sites(request))
 
 
 def upload(request):
+    if not _is_logged_in(request):
+        return redirect(users.create_login_url('/'))
+
     if request.method == 'POST':
         from tools import import_data
         data = request.POST['data']
         import_data(data)
         return redirect('/')
     return render(request, 'upload.html')
+
+
+def _is_logged_in(request):
+    current_user = users.get_current_user()
+    return current_user and current_user.email() == 'slonenka@gmail.com'
 
 
 def _sites_dict(sites):

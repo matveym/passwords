@@ -1,21 +1,25 @@
 import json
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from google.appengine.api import users
 from google.appengine.ext import ndb
 
-from models import Site, init_localstore
+from models import Site, init_localstore, root_key, site_key, all_sites
 import settings
 from utils import uniq
 
 
-if settings.DEBUG:
-    init_localstore()
+# if settings.DEBUG:
+#     init_localstore()
 
 
 def home(request):
-    sites = _all_sites()
+    # if not users.get_current_user():
+    #     return redirect(users.create_login_url('/'))
+
+    sites = all_sites()
     logins = sorted(uniq([site.login for site in sites if site.login]))
     passwords = sorted(uniq([site.password for site in sites if site.password]))
     return render(request, 'passwords.html', {
@@ -34,7 +38,7 @@ def save_site(request):
     notes =         request.POST.get('notes')
     site_id =       request.POST.get('id')
     if site_id:
-        site = ndb.Key('Site', int(site_id)).get()
+        site = site_key(site_id).get()
         site.name = site_name
         site.url = site_url
         site.login = login
@@ -42,13 +46,14 @@ def save_site(request):
         site.notes = notes
         site.put()
     else:
-        Site(name=site_name, url=site_url, login=login, password=password, notes=notes).put()
+        Site(name=site_name, url=site_url, login=login, password=password, notes=notes,
+                parent=root_key).put()
     return HttpResponse(_refresh_sites(request))
 
 
 def remove_site(request):
     site_id = request.POST['id']
-    ndb.Key('Site', int(site_id)).delete()
+    site_key(site_id).delete()
     return HttpResponse(_refresh_sites(request))
 
 
@@ -60,7 +65,7 @@ def _sites_dict(sites):
 
 
 def _refresh_sites(request):
-    sites = _all_sites()
+    sites = all_sites()
     sites_html = render(request, '_sites.html', {
         'sites': sites
         }).content
@@ -69,6 +74,3 @@ def _refresh_sites(request):
             'sites_html': sites_html,
             'sites': _sites_dict(sites)
             })
-
-def _all_sites():
-    return list(Site.query().order(Site.key))

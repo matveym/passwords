@@ -11,6 +11,23 @@ def init_localstore():
     testbed.init_datastore_v3_stub(datastore_file='/home/zoo/tmp/gae.db', use_sqlite=True)
 
 
+class SiteRoot(ndb.Model):
+    pass
+
+
+def get_site_root_key():
+    roots = list(SiteRoot.query())
+    assert len(roots) in [0, 1], roots
+
+    if not roots:
+        root_key = SiteRoot().put
+    else:
+        root_key = roots[0].key
+    return root_key
+
+root_key = get_site_root_key()
+
+
 class Site(ndb.Model):
     name = ndb.StringProperty()
     url = ndb.StringProperty()
@@ -38,3 +55,11 @@ class Site(ndb.Model):
     @property
     def json(self):
         return json.dumps(self.to_dict())
+
+
+def site_key(site_id):
+    return ndb.Key(root_key.kind(), root_key.id(), 'Site', int(site_id))
+
+
+def all_sites():
+    return list(Site.query(ancestor=root_key).order(Site.name))

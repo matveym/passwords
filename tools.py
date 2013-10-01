@@ -1,14 +1,20 @@
 from google.appengine.ext import ndb
 
-from models import Site, init_localstore
+from models import Site, root_key
 
-def import_data():
-    delete_all()
 
+def import_file():
     lines = []
     with open('data.txt') as f:
         lines = f.readlines()
-    for line in lines:
+
+    import_data(lines)
+
+
+def import_data(text):
+    delete_all()
+
+    for line in text.splitlines():
         line = line.strip()
         try:
             site_name, login, password, notes = line.split(',')
@@ -20,7 +26,8 @@ def import_data():
                 site_name, password = line.split(',')
                 login = ''
                 notes = ''
-        Site(name=site_name, url='', login=login, password=password, notes=notes).put()
+        Site(name=site_name, url='', login=login, password=password, notes=notes,
+                parent=root_key).put()
 
 
 def delete_all():

@@ -1,0 +1,6 @@
+<form action="{% url 'views.upload' %}" method="POST">
+  {% csrf_token %}
+  <textarea rows="20" cols="120" name="data"></textarea>
+  <br>
+  <button type="Submit">Upload</button>
+</form>

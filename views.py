@@ -55,6 +55,15 @@ def remove_site(request):
     return HttpResponse(_refresh_sites(request))
 
 
+def upload(request):
+    if request.method == 'POST':
+        from tools import import_data
+        data = request.POST['data']
+        import_data(data)
+        return redirect('/')
+    return render(request, 'upload.html')
+
+
 def _sites_dict(sites):
     sites_dict = {}
     for site in sites:

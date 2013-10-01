@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^$', 'views.home'),
     url(r'^save-site/$', 'views.save_site'),
     url(r'^remove-site/$', 'views.remove_site'),
+    url(r'^upload/$', 'views.upload'),
     # url(r'^passwords/', include('passwords.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

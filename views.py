@@ -12,8 +12,9 @@ from utils import uniq
 
 
 def home(request):
-    # if not users.get_current_user():
-    #     return redirect(users.create_login_url('/'))
+    current_user = users.get_current_user()
+    if not current_user or not current_user.email() == 'slonenka@gmail.com':
+        return redirect(users.create_login_url('/'))
 
     sites = all_sites()
     logins = sorted(uniq([site.login for site in sites if site.login]))
@@ -23,6 +24,7 @@ def home(request):
         'sites_json': json.dumps(_sites_dict(sites)),
         'logins_json': json.dumps(logins),
         'passwords_json': json.dumps(passwords),
+        'logout_url': users.create_logout_url('/'),
         })
 
 

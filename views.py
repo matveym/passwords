@@ -26,7 +26,7 @@ def home(request):
         'sites': sites,
         'sites_json': json.dumps(_sites_dict(sites)),
         'logins_json': json.dumps(logins),
-        'passwords_json': json.dumps(passwords)
+        'passwords_json': json.dumps(passwords),
         })
 
 
@@ -70,7 +70,12 @@ def _refresh_sites(request):
         'sites': sites
         }).content
 
+    logins = sorted(uniq([site.login for site in sites if site.login]))
+    passwords = sorted(uniq([site.password for site in sites if site.password]))
+
     return json.dumps({
             'sites_html': sites_html,
-            'sites': _sites_dict(sites)
+            'sites': _sites_dict(sites),
+            'logins': logins,
+            'passwords': passwords,
             })

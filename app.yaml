@@ -13,3 +13,8 @@ builtins:
 
 skip_files:
 - ^env/.*
+
+handlers:
+- url: /.*
+  script: google.appengine.ext.django.main.app
+  secure: always

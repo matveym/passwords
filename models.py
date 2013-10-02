@@ -12,7 +12,7 @@ def get_site_root_key():
     assert len(roots) in [0, 1], roots
 
     if not roots:
-        root_key = SiteRoot().put
+        root_key = SiteRoot().put()
     else:
         root_key = roots[0].key
     return root_key

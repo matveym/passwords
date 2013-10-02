@@ -4,11 +4,7 @@ from models import Site, root_key, all_sites
 
 
 def import_file(name='data.txt'):
-    lines = []
-    with open(name) as f:
-        lines = f.readlines()
-
-    import_data(lines)
+    import_data(read_file(name))
 
 
 def read_file(name):
@@ -16,10 +12,16 @@ def read_file(name):
         return ''.join(f.readlines()).decode('utf8')
 
 
+def strip_all(*values):
+    return [v.strip() for v in values]
+
+
 def parse_data(text):
     result = []
     for line in text.splitlines():
         line = line.strip()
+        if not line:
+            continue
         try:
             site_name, login, password, notes = line.split(',')
         except ValueError:

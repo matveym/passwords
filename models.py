@@ -34,6 +34,13 @@ class Site(ndb.Model):
             return None
         return self.key.id()
 
+    @property
+    def href(self):
+        if self.url.startswith('http'):
+            return self.url
+        else:
+            return '//' + self.url
+
     def to_dict(self):
         return {
         'id':       self.id,

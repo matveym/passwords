@@ -23,19 +23,14 @@ def parse_data(text):
         if not line:
             continue
         try:
-            site_name, login, password, notes = line.split(',')
+            site_name, url, login, password, notes = line.split(',')
         except ValueError:
-            try:
-                site_name, login, password = line.split(',')
-                notes = ''
-            except ValueError:
-                site_name, password = line.split(',')
-                login = ''
-                notes = ''
-            site_name, login, password, notes = strip_all(site_name, login, password,
-                    notes)
-            result.append(Site(name=site_name, url='', login=login, password=password, notes=notes,
-                parent=root_key))
+            site_name, url, login, password = line.split(',')
+            notes = ''
+        site_name, login, password, notes = strip_all(site_name, login, password,
+                notes)
+        result.append(Site(name=site_name, url=url, login=login, password=password, notes=notes,
+            parent=root_key))
     return result
 
 

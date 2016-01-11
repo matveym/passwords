@@ -1,2 +1,3 @@
-/home/zoo/python/google_appengine
+# /home/zoo/python/google_appengine
+~/python/google_appengine
 import dev_appserver; dev_appserver.fix_sys_path()

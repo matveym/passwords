@@ -1,7 +1,8 @@
+import json
+
 from google.appengine.ext import ndb
 
 from models import Site, root_key, all_sites
-
 
 def import_file(name='data.txt'):
     import_data(read_file(name))
@@ -40,6 +41,10 @@ def import_data(text):
     for site in parse_data(text):
         site.put()
 
+def export_to_json():
+    return json.dumps(
+        [ site.to_dict() for site in all_sites() ]
+    )
 
 def delete_all():
     keys = [site.key for site in all_sites()]

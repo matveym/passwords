@@ -68,6 +68,15 @@ def upload(request):
     return render(request, 'upload.html')
 
 
+def export(request):
+    if not _is_logged_in(request):
+        return redirect(users.create_login_url('/'))
+
+    from tools import export_to_json
+    return HttpResponse(export_to_json(),
+        content_type="application/json")
+
+
 def _is_logged_in(request):
     current_user = users.get_current_user()
     return current_user and current_user.email() == 'slonenka@gmail.com'

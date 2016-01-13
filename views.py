@@ -72,9 +72,9 @@ def export(request):
     if not _is_logged_in(request):
         return redirect(users.create_login_url('/'))
 
-    from tools import export_to_json
-    return HttpResponse(export_to_json(),
-        content_type="application/json")
+    from tools import export_to_csv
+    return HttpResponse(export_to_csv(),
+        content_type="text/plain; charset=utf-8")
 
 
 def _is_logged_in(request):

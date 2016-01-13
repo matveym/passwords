@@ -1,4 +1,7 @@
+import csv
+import codecs
 import json
+import StringIO
 
 from google.appengine.ext import ndb
 
@@ -41,10 +44,26 @@ def import_data(text):
     for site in parse_data(text):
         site.put()
 
-def export_to_json():
-    return json.dumps(
-        [ site.to_dict() for site in all_sites() ]
-    )
+def export_to_csv():
+
+    def to_csv_dict(site):
+        return {
+            "Account"       : site.name,
+            "Login Name"    : site.login,
+            "Password"      : site.password,
+            "Web Site"      : site.url,
+            "Comments"      : site.notes,
+        }
+
+    buf = StringIO.StringIO()
+    writer = csv.DictWriter(buf,
+            fieldnames=["Account","Login Name","Password","Web Site","Comments"]
+        )
+    writer.writeheader()
+    for site in all_sites():
+        writer.writerow({ k: v.encode('utf-8') for k, v in to_csv_dict(site).iteritems() })
+    return buf.getvalue()
+
 
 def delete_all():
     keys = [site.key for site in all_sites()]
